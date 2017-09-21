@@ -48,11 +48,17 @@ public:
 	// that can be called anytime, even if they 
 	// will one execute by the very end of the frame
 	// Load / Save
+	void RequestLoad();
+	void RequestSave();
+
 
 private:
 
 	// Load config file
 	bool LoadConfig();
+
+	// Load save file
+	bool LoadSavefile();
 
 	// Call modules before each loop iteration
 	void PrepareUpdate();
@@ -87,11 +93,16 @@ private:
 	pugi::xml_document	config_file;
 	pugi::xml_node		config;
 	pugi::xml_node		app_config;
+	pugi::xml_document	save_file;
+	pugi::xml_node		save;
 	int					argc;
 	char**				args;
 
 	p2SString			title;
 	p2SString			organization;
+
+	bool				has_to_save;
+	bool				has_to_load;
 
 };
 
