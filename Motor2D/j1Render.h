@@ -39,6 +39,9 @@ public:
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
 
+	pugi::xml_node Save() const;
+	bool Load(const pugi::xml_node& save_data);
+
 public:
 
 	SDL_Renderer*	renderer;

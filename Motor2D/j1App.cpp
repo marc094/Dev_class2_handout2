@@ -152,30 +152,21 @@ void j1App::PrepareUpdate()
 void j1App::FinishUpdate()
 {
 	// TODO 1: This is a good place to call load / Save functions
-	bool no_error = true;
+	bool ret = true;
 	p2List_item<j1Module*>* item;
 	item = modules.start;
 
-	if (has_to_save) {
-		while (item != NULL && no_error == true)
-		{
-			no_error = item->data->Save();
-			item = item->next;
-		}
-	}
-	else if (has_to_load) {
-		while (item != NULL && no_error == true)
-		{
-			no_error = item->data->Load(save.child(item->data->name.GetString()));
-			item = item->next;
-		}
-	}
+	if (has_to_save)
+		Save_Savefile();
+	
+	if (has_to_load)
+		Load_Savefile();
 
-	if (!no_error) {
+	if (!ret) {
 		if (has_to_load) {
 			LOG("Error loading file");
 		}
-		else if (has_to_save) {
+		if (has_to_save) {
 			LOG("Error saving file");
 		}
 	}
@@ -292,11 +283,13 @@ const char* j1App::GetOrganization() const
 	return organization.GetString();
 }
 
+// ---------------------------------------
 void j1App::RequestLoad()
 {
 	has_to_load = true;
 }
 
+// ---------------------------------------
 void j1App::RequestSave()
 {
 	has_to_save = true;
@@ -306,14 +299,15 @@ void j1App::RequestSave()
 
 // TODO 4: Create a method to actually load an xml file
 // then call all the modules to load themselves
-bool j1App::LoadSavefile() {
+bool j1App::Load_Savefile() {
 	bool ret = true;
 	pugi::xml_parse_result result = save_file.load_file("savegame.xml");
 
 	if (result == NULL) {
 		LOG("Could not load map xml file savegame.xml. pugi error: %s", result.description());
 		ret = false;
-	} else {
+	}
+	else {
 		save = save_file.child("save");
 
 		p2List_item<j1Module*>* item;
@@ -321,7 +315,7 @@ bool j1App::LoadSavefile() {
 
 		while (item != NULL && ret == true)
 		{
-			ret = item->data->Save();
+			ret = item->data->Load(save.child(item->data->name.GetString()));
 			item = item->next;
 		}
 	}
@@ -330,4 +324,21 @@ bool j1App::LoadSavefile() {
 }
 
 // TODO 7: Create a method to save the current state
+bool j1App::Save_Savefile() {
+	bool ret = true;
+	p2List_item<j1Module*>* item;
+	item = modules.start;
 
+	while (item != NULL && ret == true)
+	{
+		pugi::xml_node module_node = save.child(item->data->name.GetString());
+		if (module_node.root() == NULL) {
+
+		}
+		else {
+			module_node = item->data->Save();
+			item = item->next;
+		}
+	}
+	return ret;
+}

@@ -58,7 +58,10 @@ private:
 	bool LoadConfig();
 
 	// Load save file
-	bool LoadSavefile();
+	bool Load_Savefile();
+
+	// Save save file
+	bool Save_Savefile();
 
 	// Call modules before each loop iteration
 	void PrepareUpdate();
