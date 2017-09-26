@@ -111,10 +111,13 @@ bool j1Render::Load(const pugi::xml_node& save_data)
 
 pugi::xml_node j1Render::Save() const
 {
-	pugi::xml_node save_data = pugi::xml_node();
-	save_data.set_name("camera");
-	save_data.append_attribute("x").set_value(camera.x);
-	save_data.append_attribute("y").set_value(camera.y);
+	pugi::xml_node save_data;
+	pugi::xml_node camera_node;
+	save_data.set_name(name.GetString());
+	camera_node.set_name("camera");
+	camera_node.append_attribute("x").set_value(camera.x);
+	camera_node.append_attribute("y").set_value(camera.y);
+	save_data.insert_child_after("camera", camera_node);
 
 	return save_data;
 }

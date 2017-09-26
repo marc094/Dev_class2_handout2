@@ -328,17 +328,12 @@ bool j1App::Save_Savefile() {
 	bool ret = true;
 	p2List_item<j1Module*>* item;
 	item = modules.start;
+	pugi::xml_node save_node;
 
 	while (item != NULL && ret == true)
 	{
-		pugi::xml_node module_node = save.child(item->data->name.GetString());
-		if (module_node.root() == NULL) {
-
-		}
-		else {
-			module_node = item->data->Save();
-			item = item->next;
-		}
+		save_node.insert_child_after(item->data->name.GetString(), item->data->Save());
+		item = item->next;
 	}
 	return ret;
 }
