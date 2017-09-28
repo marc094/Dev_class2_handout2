@@ -48,8 +48,8 @@ public:
 	// that can be called anytime, even if they 
 	// will one execute by the very end of the frame
 	// Load / Save
-	void RequestLoad();
-	void RequestSave();
+	void RequestLoad(const char* filename);
+	void RequestSave(const char* filename);
 
 
 private:
@@ -58,10 +58,10 @@ private:
 	bool LoadConfig();
 
 	// Load save file
-	bool Load_Savefile();
+	bool Load();
 
 	// Save save file
-	bool Save_Savefile();
+	bool Save();
 
 	// Call modules before each loop iteration
 	void PrepareUpdate();
@@ -103,6 +103,7 @@ private:
 
 	p2SString			title;
 	p2SString			organization;
+	p2SString			save_filename;
 
 	bool				has_to_save;
 	bool				has_to_load;

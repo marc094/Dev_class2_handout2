@@ -60,12 +60,12 @@ public:
 	}
 
 	// TODO 2: Create new virtual methods to Load and Save
-	virtual pugi::xml_node Save() const
+	virtual bool Save(pugi::xml_node&) const
 	{
-		return pugi::xml_node();
+		return true;
 	}
 
-	virtual bool Load(const pugi::xml_node& save_data)
+	virtual bool Load(pugi::xml_node&)
 	{
 		return true;
 	}
